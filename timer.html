@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+</head>
+<body>
+    <h1 id="title"></h1>
+    <p id="description"></p>
+    <p id="timeRemaining"></p>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        let interval;
+
+        socket.on('timerUpdated', (data) => {
+            document.getElementById('title').textContent = data.title;
+            document.getElementById('description').textContent = data.description;
+
+            // 기존 타이머 제거
+            if (interval) {
+                clearInterval(interval);
+            }
+
+            // 새로운 타이머 시작
+            updateTimeRemaining(data.endTime);
+        });
+
+        function updateTimeRemaining(endTime) {
+            function update() {
+                const now = Date.now();
+                const timeRemaining = endTime - now;
+
+                if (timeRemaining <= 0) {
+                    document.getElementById('timeRemaining').textContent = "Time's up!";
+                    clearInterval(interval);
+                } else {
+                    document.getElementById('timeRemaining').textContent = timeRemaining + " ms remaining";
+                }
+            }
+
+            interval = setInterval(update, 100); // Update every 100ms
+            update();
+        }
+    </script>
+</body>
+</html>
