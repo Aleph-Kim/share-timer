@@ -5,13 +5,29 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 
+// env 파일 사용
+require('dotenv').config();
+
+// session 사용
+const session = require('express-session');
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
+
 // 소켓 설정
 const socketHelper = require('./helpers/socket');
 const io = socketHelper.init(server);
 
+// 라우터 설정
 const adminRoutes = require("./routes/adminRoute");
 const timerRoutes = require("./routes/timerRoute");
 
+// application/x-www-form-urlencoded(html 폼) 데이터 파싱
+app.use(express.urlencoded({ extended: false }));
+// application/json 데이터 파싱
 app.use(express.json());
 
 // 템플릿 엔진 설정

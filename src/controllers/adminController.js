@@ -1,11 +1,30 @@
 const socket = require("../helpers/socket");
 
 /**
+ * 관리자 로그인 페이지
+ */
+const getAdminLoginPage = (req, res) => {
+    console.log(req.session.msg);
+    res.render('layouts/index', {
+        title: '관리자 로그인',
+        body: '../pages/login',
+        msg: req.session.msg
+    });
+}
+
+/**
  * 타이머 관리자 페이지
  */
 const getAdminPage = (req, res) => {
+    if (req.body.password != process.env.ADMIN_PASSWORD) {
+        req.session.msg = "하하 틀렸지롱";
+        return res.redirect("/admin");
+    }
+
+    delete req.session.msg;
+
     res.render('layouts/index', {
-        title: 'Timer Admin',
+        title: '타이머 관리자',
         body: '../pages/admin'
     });
 }
@@ -15,7 +34,7 @@ const getAdminPage = (req, res) => {
  */
 const updateTimer = (req, res) => {
     const io = socket.getIo();
-    
+
     timerSettings = {
         title: req.body.title,
         description: req.body.description,
@@ -25,4 +44,8 @@ const updateTimer = (req, res) => {
     res.status(200).send('Timer updated');
 }
 
-module.exports = { getAdminPage, updateTimer };
+module.exports = {
+    getAdminLoginPage,
+    getAdminPage,
+    updateTimer
+};

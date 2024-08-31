@@ -1,0 +1,11 @@
+<h1><%- title %></h1>
+<form id="loginForm" method="post">
+  <div>
+    <label for="adminPassword">비밀번호 : </label>
+    <input type="password" name="password" id="adminPassword" required>
+    <% if (msg) { %>
+    <div><%- msg %></div>
+    <% } %>
+  </div>
+  <button type="submit">로그인</button>
+</form>
