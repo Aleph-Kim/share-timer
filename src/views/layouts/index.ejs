@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <!-- 공통 CSS -->
+  <link rel="stylesheet" href="/assets/css/common.css">
+  <!-- 페이지별 추가 CSS -->
+  <% if (typeof extraCSS !== 'undefined') { %>
+  <link rel="stylesheet" href="<%= extraCSS %>">
+  <% } %>
+</head>
+
+<body>
+
+  <!-- header -->
+  <%- include('./header') %>
+
+  <!-- content -->
+  <div class="content">
+    <%- include(body) %>
+  </div>
+
+  <!-- footer -->
+  <%- include('./footer') %>
+
+  <!-- 공통 js -->
+  <script src="/assets/js/common.js"></script>
+  <!-- 페이지별 추가 js -->
+  <% if (typeof extraJS !== 'undefined') { %>
+  <script src="<%= extraJS %>"></script>
+  <% } %>
+</body>
+
+</html>

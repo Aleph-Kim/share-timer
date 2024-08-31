@@ -1,0 +1,18 @@
+<h1>Timer Admin</h1>
+<form id="timerForm">
+  <label for="title">Title:</label><br>
+  <input type="text" id="title" name="title" required><br>
+  <label for="description">Description:</label><br>
+  <input type="text" id="description" name="description" required><br>
+  <label for="endTime">End Time:</label><br>
+  <input type="datetime-local" id="endTime" name="endTime" required><br><br>
+  <button type="submit">Update Timer</button>
+</form>
+
+<script>
+  const form = document.getElementById('timerForm');
+
+  document.addEventListener("DOMContentLoaded", function() {
+    form.addEventListener('submit', timerUpdate);
+  });
+</script>

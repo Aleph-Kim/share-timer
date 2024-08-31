@@ -1,0 +1,29 @@
+<h1 id="title"></h1>
+<p id="description"></p>
+<p id="timeRemaining"></p>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  let interval;
+
+  /**
+   * timerUpdated 소켓 이벤트 발생 시 타이머를 새로 시작
+   */
+  socket.on('timerUpdated', (data) => {
+    document.getElementById('title').textContent = data.title;
+    document.getElementById('description').textContent = data.description;
+
+    // 기존 타이머 제거
+    if (interval) {
+      clearInterval(interval);
+    }
+
+    // 새로운 타이머 시작
+    updateTimeRemaining(data.endTime);
+  });
+</script>
+</body>
+
+</html>
