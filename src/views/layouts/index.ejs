@@ -5,20 +5,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %></title>
-  
+
   <!-- 공통 CSS -->
   <link rel="stylesheet" href="/assets/css/common.css">
   <!-- 페이지별 추가 CSS -->
-  <% extraCSS.forEach((css, index) => { %>
+  <% if (typeof extraCss != 'undefined') { %>
+  <% extraCss.forEach((css, index) => { %>
   <link rel="stylesheet" href="<%= css %>">
   <% }); %>
+  <% } %>
 
   <!-- 공통 js -->
   <script src="/assets/js/common.js"></script>
   <!-- 페이지별 추가 js -->
+  <% if (typeof extraJs != 'undefined') { %>
   <% extraJs.forEach((js, index) => { %>
   <script src="<%= js %>"></script>
   <% }); %>
+  <% } %>
 </head>
 
 <body>

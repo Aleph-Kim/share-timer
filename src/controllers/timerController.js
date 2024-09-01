@@ -9,7 +9,7 @@ const getTimerPage = (req, res) => {
             '/assets/js/timer.js',
             '/socket.io/socket.io.js'
         ],
-        extraCSS: ['/assets/css/timer.css']
+        extraCss: ['/assets/css/timer.css']
     });
 };
 

@@ -5,6 +5,9 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 
+const notFoundHandler = require("./middlewares/notFoundHandler")
+const errorHandler = require("./middlewares/errorHandler")
+
 // env 파일 사용
 require('dotenv').config();
 
@@ -39,6 +42,12 @@ app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 // 라우터
 app.use('/admin', adminRoutes);
 app.use('/', timerRoutes);
+
+// 404 에러 핸들링 미들웨어
+app.use(notFoundHandler);
+
+// 에러 핸들링 미들웨어
+app.use(errorHandler);
 
 let timerSettings = {
     title: 'Default Title',
