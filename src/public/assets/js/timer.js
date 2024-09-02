@@ -67,6 +67,11 @@ function updateTimeRemaining(endTime) {
  * @param {*} remainingTime 남은 시간
  */
 function updateProgress(progressBar, progressPer, totalTime, remainingTime) {
+    // 타이머 삭제 시 %가 NaN이 됨을 방지
+    if (totalTime == 0) {
+        totalTime -= 1;
+    }
+
     // 경과된 시간 계산
     const elapsed = totalTime - remainingTime;
 
@@ -127,7 +132,7 @@ function getEndDateText(endTime) {
         return `${endDay}일 ` + defaultTimeText;
     }
 
-    if (endDate.getSeconds() != 0){
+    if (endDate.getSeconds() != 0) {
         return defaultTimeText + ` ${endDate.getSeconds()}초`;
     }
 

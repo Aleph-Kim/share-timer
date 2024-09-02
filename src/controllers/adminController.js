@@ -46,8 +46,23 @@ const updateTimer = (req, res) => {
     res.status(200).send('Timer updated');
 }
 
+/**
+ * 타이머 삭제
+ */
+const deleteTimer = (req, res) => {
+    const io = socket.getIo();
+
+    timerSettings.title = "";
+    timerSettings.description = "";
+    timerSettings.endTime = new Date().getTime();
+
+    io.emit('timerUpdated', timerSettings); // 모든 클라이언트에 업데이트 전송
+    res.status(200).send('Timer updated');
+}
+
 module.exports = {
     adminLoginPage,
     adminPage,
-    updateTimer
+    updateTimer,
+    deleteTimer
 };

@@ -52,9 +52,12 @@
       <input type="text" id="description" name="description" placeholder="타이머에 대한 설명" class="input input-bordered w-full" required />
     </div>
 
-    <div class="flex justify-evenly">
-        <button class="btn btn-error w-2/5" type="button" onclick="resetTimer()">초기화</button>
-        <button class="btn btn-primary w-2/5" type="submit">시작</button>
+    <div class="flex flex-col items-center">
+        <div class="flex flex-row justify-between w-full">
+            <button class="btn btn-warning w-[49%]" type="button" onclick="resetTimer()">초기화</button>
+            <button class="btn btn-primary w-[49%]" type="submit">시작</button>
+        </div>
+        <button type="button" class="btn mt-4 btn-error w-full" onclick="deleteTimer()">기존 타이머 삭제</button>
     </div>
   </form>
 </div>

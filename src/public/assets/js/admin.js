@@ -27,7 +27,22 @@ async function timerUpdate(event) {
         body: JSON.stringify({ title, description, date })
     });
 
-    alert('Timer updated');
+    alert('타이머가 업데이트 되었습니다.');
+}
+
+/**
+ * 타이머 삭제 함수
+ */
+async function deleteTimer() {
+    if (confirm("정말 삭제하시겠습니까?") == false) {
+        return;
+    }
+
+    await fetch('/admin', {
+        method: 'DELETE'
+    });
+
+    alert('타이머가 삭제되었습니다.');
 }
 
 /**
