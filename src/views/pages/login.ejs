@@ -1,11 +1,38 @@
-<h1><%- title %></h1>
-<form id="loginForm" method="post">
-  <div>
-    <label for="adminPassword">비밀번호 : </label>
-    <input type="password" name="password" id="adminPassword" required>
-    <% if (msg) { %>
-    <div><%- msg %></div>
-    <% } %>
+<div class="flex items-center justify-center">
+  <div class="w-96 shadow-xl">
+    <div class="card-body">
+      <h2 class="text-2xl font-bold text-center">관리자 로그인</h2>
+      <form id="loginForm" method="post">
+        <div class="form-control">
+        </div>
+        <div class="form-control mt-4">
+          <label class="label">
+            <span class="label-text">비밀번호</span>
+          </label>
+          <input type="password" name="password" placeholder="********" class="input input-bordered">
+        </div>
+        <% if (msg) { %>
+        <div id="alertError" class="alert alert-error shadow-lg mt-4 cursor-pointer" onclick="this.style.display = 'none';">
+          <span><%- msg %></span>
+        </div>
+        <% } %>
+        <div class="form-control mt-6">
+          <button class="btn btn-primary">로그인</button>
+        </div>
+      </form>
+      <div class="text-center mt-4">
+        <button class="link link-primary" onclick="my_modal_1.showModal()">비밀번호를 잊으셨나요?</button>
+        <dialog id="my_modal_1" class="modal">
+          <div class="modal-box">
+            <h3 class="text-lg font-bold">하하 안 됐네요!</h3>
+            <div class="modal-action">
+              <form method="dialog">
+                <button class="btn">체념하고 돌아가기</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      </div>
+    </div>
   </div>
-  <button type="submit">로그인</button>
-</form>
+</div>
