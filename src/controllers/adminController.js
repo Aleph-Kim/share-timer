@@ -49,6 +49,7 @@ const updateTimer = (req, res) => {
 
     timerSettings.title = req.body.title;
     timerSettings.description = req.body.description;
+    timerSettings.startTime = new Date().getTime();
     timerSettings.endTime = new Date(req.body.date).getTime();
 
     io.emit('timerUpdated', timerSettings); // 모든 클라이언트에 업데이트 전송
@@ -67,6 +68,7 @@ const deleteTimer = (req, res) => {
 
     timerSettings.title = "";
     timerSettings.description = "";
+    timerSettings.startTime = new Date().getTime();
     timerSettings.endTime = new Date().getTime();
 
     io.emit('timerUpdated', timerSettings); // 모든 클라이언트에 업데이트 전송

@@ -5,7 +5,7 @@ const alarmSound = new Audio('/assets/sounds/alarm_sound.mp3');
  *
  * @param {number} endTime - 밀리초 단위 종료 시간
  */
-function updateTimeRemaining(endTime) {
+function updateTimeRemaining(startTime, endTime) {
     // 타이머 디스플레이
     const timeDisplay = document.querySelector('.time');
     // 타이머 써클 SVG
@@ -19,7 +19,7 @@ function updateTimeRemaining(endTime) {
     alarmTime.textContent = getEndDateText(endTime);
 
     // 총 타이머 시간 (초 단위) 계산
-    const totalTime = Math.floor((endTime - Date.now()) / 1000);
+    const totalTime = Math.floor((endTime - startTime) / 1000);
 
     // 반지름 계산
     const rPercentage = parseFloat(timerCircleForeground.getAttribute('r')); // r 값(%)
