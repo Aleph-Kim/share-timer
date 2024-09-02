@@ -1,0 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DaisyUI의 스타일을 포함 */
+@import "daisyui";

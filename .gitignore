@@ -194,4 +194,5 @@ dist
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,node,visualstudiocode
+# tailwind build css
+src/public/assets/css/output.css

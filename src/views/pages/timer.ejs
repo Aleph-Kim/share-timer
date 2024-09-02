@@ -1,23 +1,23 @@
-<h1 id="title"></h1>
-<p id="description"></p>
+<div class="timer flex flex-col items-center justify-center">
+  <h1 id="title" class="text-3xl font-bold mb-4"></h1>
+  <p id="description" class="text-lg mb-6"></p>
 
-<div class="timer-container">
-  <h1>온라인 타이머</h1>
-  <div class="timer-circle">
-    <svg class="timer-svg">
-      <circle cx="50%" cy="50%" r="48%" class="timer-circle-background"></circle>
-      <circle cx="50%" cy="50%" r="48%" class="timer-circle-foreground"></circle>
-    </svg>
-    <div class="time-text">
-      <div class="time">00:00</div>
-      <div>⏰ <span class="alarm-time">00:00</span></div>
+  <div class="timer-container">
+    <div class="timer-circle relative">
+      <svg class="timer-svg">
+        <circle cx="50%" cy="50%" r="48%" class="timer-circle-background"></circle>
+        <circle cx="50%" cy="50%" r="48%" class="timer-circle-foreground"></circle>
+      </svg>
+      <div class="time-text absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full">
+        <div class="time text-4xl mb-2">00:00</div>
+        <div>⏰ <span class="alarm-time text-warning text-xl">00:00</span></div>
+      </div>
     </div>
-  </div>
-  <div class="progress-bar">
-    <div class="progress"></div>
-    <div class="progress-text">
-      <span class="progress-per">0</span>
-      <span>%</span>
+    <div class="progress-bar bg-neutral mt-6 rounded-lg overflow-hidden w-full h-5 relative">
+      <div class="progress h-full bg-primary" style="width: 0%;"></div>
+      <div class="progress-text absolute top-0 left-1/2 transform -translate-x-1/2 text-white flex h-full items-center">
+        <span class="progress-per">0</span><span>%</span>
+      </div>
     </div>
   </div>
 </div>

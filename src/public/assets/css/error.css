@@ -1,37 +1,3 @@
 body {
     overflow: hidden;
 }
-
-.comment {
-    font-size: 1.5rem;
-    margin-top: 0;
-}
-
-.back-link {
-    text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
-}
-
-.back-link:hover {
-    color: #0056b3;
-}
-
-.error-image {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 2rem;
-}
-
-.error-text {
-    position: absolute;
-    font-size: 6rem;
-    top: -7%;
-    left: -10%;
-    color: #afafaf15;
-    z-index: -1;
-}
-
-.error-text div {
-    white-space: nowrap;
-}
