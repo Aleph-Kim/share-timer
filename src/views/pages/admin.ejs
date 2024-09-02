@@ -1,13 +1,57 @@
-<h1><%- title %></h1>
-<form id="timerForm">
-  <label for="title">Title:</label><br>
-  <input type="text" id="title" name="title" required><br>
-  <label for="description">Description:</label><br>
-  <input type="text" id="description" name="description" required><br>
-  <label for="endTime">End Time:</label><br>
-  <input type="datetime-local" id="endTime" name="endTime" required><br><br>
-  <button type="submit">Update Timer</button>
-</form>
+<div class="container mx-auto p-8">
+  <!-- 타이머 설정 -->
+  <div class="card bg-base-200 p-6">
+    <h2 class="text-xl font-bold mb-4">타이머 설정</h2>
+
+    <div class="grid grid-cols-3 gap-4 mb-6">
+      <div>
+        <label class="block mb-2">시간</label>
+        <select class="select select-bordered w-full">
+          <% for (let i = 0; i < 24; i++){%>
+          <option value="<%- i %>"><%- String(i).padStart(2, '0') %></option>Ï
+          <% } %>
+        </select>
+      </div>
+      <div>
+        <label class="block mb-2">분</label>
+        <select class="select select-bordered w-full">
+          <% for (let i = 0; i < 60; i++){%>
+          <option value="<%- i %>"><%- String(i).padStart(2, '0') %></option>Ï
+          <% } %>
+        </select>
+      </div>
+      <div>
+        <label class="block mb-2">초</label>
+        <select class="select select-bordered w-full">
+          <% for (let i = 0; i < 60; i++){%>
+          <option value="<%- i %>"><%- String(i).padStart(2, '0') %></option>Ï
+          <% } %>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4 mb-6 text-blue-400">
+      <button class="btn btn-ghost btn-sm">1분</button>
+      <button class="btn btn-ghost btn-sm">5분</button>
+      <button class="btn btn-ghost btn-sm">10분</button>
+      <button class="btn btn-ghost btn-sm">15분</button>
+      <button class="btn btn-ghost btn-sm">30분</button>
+      <button class="btn btn-ghost btn-sm">1시간</button>
+    </div>
+
+    <div class="mb-6">
+      <label class="block mb-2">타이머 이름</label>
+      <input type="text" placeholder="타이머" class="input input-bordered w-full" />
+    </div>
+
+    <div class="mb-6">
+      <label class="block mb-2">타이머 설명</label>
+      <input type="text" placeholder="타이머에 대한 설명" class="input input-bordered w-full" />
+    </div>
+
+    <button class="btn btn-primary w-full">타이머 시작</button>
+  </div>
+</div>
 
 <script>
   const form = document.getElementById('timerForm');
