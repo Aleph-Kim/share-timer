@@ -23,8 +23,7 @@
 </div>
 <script>
   const socket = io();
-  let interval;
-
+  let timerInterval;
 
   /**
    * timerUpdated 소켓 이벤트 발생 시 타이머를 새로 시작
@@ -34,8 +33,8 @@
     document.getElementById('description').textContent = data.description;
 
     // 기존 타이머 제거
-    if (interval) {
-      clearInterval(interval);
+    if (timerInterval) {
+      clearInterval(timerInterval);
     }
 
     // 새로운 타이머 시작

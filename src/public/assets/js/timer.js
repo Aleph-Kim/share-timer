@@ -32,9 +32,6 @@ function updateTimeRemaining(endTime) {
     timerCircleForeground.style.strokeDasharray = `${circleLength} ${circleLength}`;
     timerCircleForeground.style.strokeDashoffset = circleLength;
 
-    // 타이머를 업데이트하는 인터벌 변수
-    let timerInterval;
-
     function update() {
         // 밀리초 단위 현재 시간
         const currentTime = Date.now();
