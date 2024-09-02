@@ -193,6 +193,3 @@ dist
 # Ignore all local history of files
 .history
 .ionide
-
-# tailwind build css
-src/public/assets/css/output.css
