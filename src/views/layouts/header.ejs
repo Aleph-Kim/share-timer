@@ -1,13 +1,17 @@
 <header class="navbar bg-base-100 shadow-lg justify-between">
-  <div class="">
+  <div class="flex-1">
     <a href="/admin" class="normal-case text-lg">관리자</a>
   </div>
-  <div class="">
+  <div class="flex-1 justify-center">
     <a href="/" class="normal-case text-xl font-bold">공유 타이머</a>
   </div>
-  <div class="">
-    <button class="btn btn-square btn-ghost" id="theme-toggle">
-        <span id="theme-icon" class="icon">&#9728;</span>
+  <div class="flex-1 justify-end">
+    <label for="soundCheck">
+      <input id="soundCheck" type="checkbox" hidden onchange="soundIconToggle()">
+      <span id="soundIcon" class="btn btn-square btn-ghost w-10">🔇</span>
+    </label>
+    <button class="btn btn-square btn-ghost w-10" id="themeToggle">
+      <span id="themeIcon">&#9728;</span>
     </button>
   </div>
 </header>

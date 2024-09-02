@@ -1,3 +1,5 @@
+const alarmSound = new Audio('/assets/sounds/alarm_sound.mp3');
+
 /**
  * 남은 시간 출력 함수
  *
@@ -51,6 +53,7 @@ function updateTimeRemaining(endTime) {
         // 남은 시간이 0이면 타이머를 정지
         if (remainingTime <= 0) {
             clearInterval(timerInterval);
+            soundOn();
         }
     }
 
@@ -168,4 +171,29 @@ function getRemainingTimeText(remainingTime) {
     }
 
     return remainingTimeText;
+}
+
+/**
+ * 알람소리 실행 함수
+ */
+function soundOn() {
+    const soundChecked = document.getElementById("soundCheck").checked;
+    const soundOffBtn = document.getElementById("soundOffBtn");
+
+    // 알람소리를 듣겠다고 체크했을 경우에만
+    if (soundChecked) {
+        alarmSound.loop = true; // 반복 재생
+        alarmSound.play();
+        soundOffBtn.style.display = "inline-flex";
+    }
+}
+
+/**
+ * 알람소리 끄기 함수
+ */
+function soundOff() {
+    const soundOffBtn = document.getElementById("soundOffBtn");
+    soundOffBtn.style.display = "none";
+
+    alarmSound.pause();
 }
