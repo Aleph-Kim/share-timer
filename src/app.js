@@ -28,6 +28,9 @@ const io = socketHelper.init(server);
 const adminRoutes = require("./routes/adminRoute");
 const timerRoutes = require("./routes/timerRoute");
 
+// 타이머 세팅값
+let timerSettings = require('./config/timerSettings');
+
 // application/x-www-form-urlencoded(html 폼) 데이터 파싱
 app.use(express.urlencoded({ extended: false }));
 // application/json 데이터 파싱
@@ -49,18 +52,12 @@ app.use(notFoundHandler);
 // 에러 핸들링 미들웨어
 app.use(errorHandler);
 
-let timerSettings = {
-    title: 'Default Title',
-    description: 'Default Description',
-    endTime: Date.now()
-};
-
 io.on('connection', (socket) => {
-    console.log('New client connected');
+    console.log('새로운 클라이언트 접속!');
     socket.emit('timerUpdated', timerSettings);
 
     socket.on('disconnect', () => {
-        console.log('Client disconnected');
+        console.log('클라이언트 접속 종료');
     });
 });
 

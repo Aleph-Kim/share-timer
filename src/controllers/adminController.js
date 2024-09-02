@@ -1,4 +1,5 @@
 const socket = require("../helpers/socket");
+let timerSettings = require("../config/timerSettings");
 
 /**
  * 관리자 로그인 페이지
@@ -37,11 +38,10 @@ const adminPage = (req, res) => {
 const updateTimer = (req, res) => {
     const io = socket.getIo();
 
-    timerSettings = {
-        title: req.body.title,
-        description: req.body.description,
-        endTime: new Date(req.body.date).getTime()
-    };
+    timerSettings.title = req.body.title;
+    timerSettings.description = req.body.description;
+    timerSettings.endTime = new Date(req.body.date).getTime();
+
     io.emit('timerUpdated', timerSettings); // 모든 클라이언트에 업데이트 전송
     res.status(200).send('Timer updated');
 }
