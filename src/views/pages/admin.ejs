@@ -1,56 +1,62 @@
 <div class="container mx-auto p-8">
   <!-- 타이머 설정 -->
-  <div class="card bg-base-200 p-6">
+  <form id="timerForm" class="card bg-base-200 p-6">
+    <input type="hidden" id="addSeconds" value="0" />
+
     <h2 class="text-xl font-bold mb-4">타이머 설정</h2>
 
+    <!-- 시간 설정 -->
     <div class="grid grid-cols-3 gap-4 mb-6">
       <div>
-        <label class="block mb-2">시간</label>
-        <select class="select select-bordered w-full">
-          <% for (let i = 0; i < 24; i++){%>
-          <option value="<%- i %>"><%- String(i).padStart(2, '0') %></option>Ï
+        <label for="hours" class="block mb-2">시</label>
+        <select id="hours" class="select select-bordered w-full" onchange="changeTimeSelect()">
+          <% for (let i = 0; i < 24; i++){ %>
+          <option value="<%- String(i).padStart(2, '0') %>"><%- String(i).padStart(2, '0') %></option>
           <% } %>
         </select>
       </div>
       <div>
-        <label class="block mb-2">분</label>
-        <select class="select select-bordered w-full">
-          <% for (let i = 0; i < 60; i++){%>
-          <option value="<%- i %>"><%- String(i).padStart(2, '0') %></option>Ï
+        <label for="minutes" class="block mb-2">분</label>
+        <select id="minutes" class="select select-bordered w-full" onchange="changeTimeSelect()">
+          <% for (let i = 0; i < 60; i++){ %>
+          <option value="<%- String(i).padStart(2, '0') %>"><%- String(i).padStart(2, '0') %></option>
           <% } %>
         </select>
       </div>
       <div>
-        <label class="block mb-2">초</label>
-        <select class="select select-bordered w-full">
-          <% for (let i = 0; i < 60; i++){%>
-          <option value="<%- i %>"><%- String(i).padStart(2, '0') %></option>Ï
+        <label for="seconds" class="block mb-2">초</label>
+        <select id="seconds" class="select select-bordered w-full" onchange="changeTimeSelect()">
+          <% for (let i = 0; i < 60; i++){ %>
+          <option value="<%- String(i).padStart(2, '0') %>"><%- String(i).padStart(2, '0') %></option>
           <% } %>
         </select>
       </div>
     </div>
 
     <div class="grid grid-cols-3 gap-4 mb-6 text-blue-400">
-      <button class="btn btn-ghost btn-sm">1분</button>
-      <button class="btn btn-ghost btn-sm">5분</button>
-      <button class="btn btn-ghost btn-sm">10분</button>
-      <button class="btn btn-ghost btn-sm">15분</button>
-      <button class="btn btn-ghost btn-sm">30분</button>
-      <button class="btn btn-ghost btn-sm">1시간</button>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="clickTimeBtn(60)">1분</button>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="clickTimeBtn(300)">5분</button>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="clickTimeBtn(600)">10분</button>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="clickTimeBtn(900)">15분</button>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="clickTimeBtn(1800)">30분</button>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="clickTimeBtn(3600)">1시간</button>
     </div>
 
     <div class="mb-6">
-      <label class="block mb-2">타이머 이름</label>
-      <input type="text" placeholder="타이머" class="input input-bordered w-full" />
+      <label for="title" class="block mb-2">타이머 이름</label>
+      <input type="text" id="title" name="title" placeholder="타이머" class="input input-bordered w-full" required />
     </div>
 
     <div class="mb-6">
-      <label class="block mb-2">타이머 설명</label>
-      <input type="text" placeholder="타이머에 대한 설명" class="input input-bordered w-full" />
+      <label for="description" class="block mb-2">타이머 설명</label>
+      <input type="text" id="description" name="description" placeholder="타이머에 대한 설명" class="input input-bordered w-full" required />
     </div>
 
-    <button class="btn btn-primary w-full">타이머 시작</button>
-  </div>
+    <div class="flex justify-evenly">
+        <button class="btn btn-error w-2/5" type="button" onclick="resetTimer()">초기화</button>
+        <button class="btn btn-primary w-2/5" type="submit">시작</button>
+    </div>
+  </form>
 </div>
 
 <script>

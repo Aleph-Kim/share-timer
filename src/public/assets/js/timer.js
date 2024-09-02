@@ -131,7 +131,7 @@ function getEndDateText(endTime) {
     }
 
     if (endDate.getSeconds() != 0){
-        return defaultTimeText + `${endDate.getSeconds()}초`;
+        return defaultTimeText + ` ${endDate.getSeconds()}초`;
     }
 
     return defaultTimeText;
