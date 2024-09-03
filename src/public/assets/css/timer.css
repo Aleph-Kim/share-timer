@@ -1,6 +1,23 @@
+/* 기본 스타일 */
 .timer-svg {
-    width: min(50vw, 50vh);
-    height: min(50vw, 50vh);
+    width: min(90vw, 90vh);
+    height: min(90vw, 90vh);
+}
+
+/* 태블릿 */
+@media (min-width: 768px) {
+    .timer-svg {
+        width: min(70vw, 70vh);
+        height: min(70vw, 70vh);
+    }
+}
+
+/* 데스크탑 */
+@media (min-width: 1024px) {
+    .timer-svg {
+        width: min(60vw, 60vh);
+        height: min(60vw, 60vh);
+    }
 }
 
 .timer-circle-background,
