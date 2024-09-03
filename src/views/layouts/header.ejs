@@ -1,16 +1,23 @@
-<header class="navbar bg-base-100 shadow-lg justify-between">
-  <div class="flex-1">
-    <a href="/admin" class="normal-case text-lg">관리자</a>
+<header class="navbar bg-base-100">
+  <div class="navbar-start">
+    <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+      <a href="/admin" class="normal-case text-lg">
+        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path>
+        </svg>
+      </a>
+    </div>
   </div>
-  <div class="flex-1 justify-center">
-    <a href="/" class="normal-case text-xl font-bold">공유 타이머</a>
+  <div class="navbar-center">
+    <a href="/" class="btn btn-ghost text-xl">공유 타이머</a>
   </div>
-  <div class="flex-1 justify-end">
+  <div class="navbar-end">
     <label for="soundCheck">
       <input id="soundCheck" type="checkbox" hidden onchange="soundIconToggle()">
-      <span id="soundIcon" class="btn btn-square btn-ghost w-10">🔇</span>
+      <span id="soundIcon" class="btn btn-ghost btn-circle">🔇</span>
     </label>
-    <button class="btn btn-square btn-ghost w-10" id="themeToggle">
+    <button id="themeToggle" class="btn btn-ghost btn-circle">
       <span id="themeIcon">&#9728;</span>
     </button>
   </div>
