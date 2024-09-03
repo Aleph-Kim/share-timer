@@ -21,18 +21,26 @@ function updateTimer(startTime, endTime) {
     // 총 타이머 시간 (초 단위) 계산
     const totalTime = Math.floor((endTime - startTime) / 1000);
 
-    // 반지름 계산
-    const rPercentage = parseFloat(timerCircleForeground.getAttribute('r')); // r 값(%)
-    const svgWidth = timeDisplay.clientWidth; // 서클 넓이
-    const radius = svgWidth * rPercentage / 100; // 반지름
+    // 써클 둘레
+    let circleLength = setCircleAttributes();
 
-    // 원의 둘레를 계산
-    const circleLength = 2 * Math.PI * radius;
+    // 써클 초기 설정 함수
+    function setCircleAttributes() {
+        // 반지름 계산
+        const rPercentage = parseFloat(timerCircleForeground.getAttribute('r')); // r 값(%)
+        const svgWidth = timeDisplay.clientWidth; // 서클 넓이
+        const radius = svgWidth * rPercentage / 100; // 반지름
 
-    // SVG 원의 strokeDasharray와 strokeDashoffset 초기 설정
-    // strokeDasharray는 원의 전체 길이를 설정하며, strokeDashoffset은 원의 둘레를 초기화
-    timerCircleForeground.style.strokeDasharray = `${circleLength} ${circleLength}`;
-    timerCircleForeground.style.strokeDashoffset = circleLength;
+        // 원의 둘레를 계산
+        const circleLength = 2 * Math.PI * radius;
+
+        // SVG 원의 strokeDasharray와 strokeDashoffset 초기 설정
+        // strokeDasharray는 원의 전체 길이를 설정하며, strokeDashoffset은 원의 둘레를 초기화
+        timerCircleForeground.style.strokeDasharray = `${circleLength} ${circleLength}`;
+        timerCircleForeground.style.strokeDashoffset = circleLength;
+
+        return circleLength;
+    }
 
     function update() {
         // 밀리초 단위 현재 시간
@@ -62,6 +70,11 @@ function updateTimer(startTime, endTime) {
     timerInterval = setInterval(update, 100);
 
     update();
+
+    // 브라우저 리사이즈 이벤트 핸들러 등록
+    window.addEventListener('resize', () => {
+        circleLength = setCircleAttributes();
+    });
 }
 
 /**
