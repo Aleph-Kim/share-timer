@@ -5,9 +5,9 @@ const alarmSound = new Audio('/assets/sounds/alarm_sound.mp3');
  *
  * @param {number} endTime - 밀리초 단위 종료 시간
  */
-function updateTimeRemaining(startTime, endTime) {
+function updateTimer(startTime, endTime) {
     // 타이머 디스플레이
-    const timeDisplay = document.querySelector('.time');
+    const timeDisplay = document.querySelector('.time-text');
     // 타이머 써클 SVG
     const timerCircleForeground = document.querySelector('.timer-circle-foreground');
     // 프로그레스 바
@@ -38,20 +38,22 @@ function updateTimeRemaining(startTime, endTime) {
         // 밀리초 단위 현재 시간
         const currentTime = Date.now();
 
-        // 남은 시간 계산(0보다 작으면 0으로 설정)
-        const remainingTime = Math.max(Math.floor((endTime - currentTime) / 1000), 0);
+        // 남은 초단위 시간 (0보다 작으면 0으로 설정)
+        const remainingSeconds = Math.max(Math.floor((endTime - currentTime) / 1000), 0);
 
-        // 남은 시간 업데이트
-        timeDisplay.textContent = getRemainingTimeText(remainingTime);
+        // 남은 시간
+        const remainingTime = getSecondToTime(remainingSeconds);
+
+        updateRemainingTime(remainingTime);
 
         // 프로그래스 바 업데이트
-        updateProgress(progressBar, progressPer, totalTime, remainingTime);
+        updateProgress(progressBar, progressPer, totalTime, remainingSeconds);
 
         // 써클 업데이트
-        updateCircle(timerCircleForeground, circleLength, totalTime, remainingTime);
+        updateCircle(timerCircleForeground, circleLength, totalTime, remainingSeconds);
 
         // 남은 시간이 0이면 타이머를 정지
-        if (remainingTime <= 0) {
+        if (remainingSeconds <= 0) {
             clearInterval(timerInterval);
             soundOn();
         }
@@ -143,34 +145,30 @@ function getEndDateText(endTime) {
 }
 
 /**
- * 남은 시간을 시:분:초 문자열로 반환하는 함수
+ * 초 단위 시간을 시, 분, 초로 계산하여 반환하는 함수
  * 
- * @param {number} remainingTime - 남은 시간(초 단위)
- * @returns {string} - 시:분:초 형식으로 변환한 남은 시간
- *                     Ex) "03:25", "01:45:30"
+ * @param {number} remainingTime - 초 단위 시간
+ * @returns {object} - 시, 분, 초로 계산한 시간
  */
-function getRemainingTimeText(remainingTime) {
+function getSecondToTime(remainingTime) {
+    // 남은 시간 - 시
+    let hour = 0;
     // 남은 시간 - 분
-    const minutes = remainingTime / 60;
-    // 남은 시간 문자열 - 초
-    const secondsText = String(remainingTime % 60).padStart(2, '0');
+    let minutes = Math.floor(remainingTime / 60);
+    // 남은 시간 - 초
+    const seconds = remainingTime % 60;
 
-    // 반환할 문자열
-    let remainingTimeText;
-
-    if (minutes > 59) { // 1시간 이상 남았을 경우
-        // 남은 시간 문자열 - 시간
-        const hourText = String(Math.floor(minutes / 60)).padStart(2, '0');
-        // 남은 시간 문자열 - 분
-        const minutesText = String(Math.floor(minutes % 60)).padStart(2, '0');
-        remainingTimeText = `${hourText}:${minutesText}:${secondsText}`
-    } else {
-        // 남은 시간 문자열 - 분
-        const minutesText = String(Math.floor(minutes)).padStart(2, '0');
-        remainingTimeText = `${minutesText}:${secondsText}`
+    // 1시간 이상 남았을 경우
+    if (minutes > 59) {
+        hour = Math.floor(minutes / 60);
+        minutes %= 60;
     }
 
-    return remainingTimeText;
+    return {
+        hour: hour,
+        minutes: minutes,
+        seconds: seconds,
+    };
 }
 
 /**
@@ -196,4 +194,23 @@ function soundOff() {
     soundOffBtn.style.display = "none";
 
     alarmSound.pause();
+}
+
+function updateRemainingTime(remainingTime) {
+    const hourTag = document.getElementById("timer-hour");
+    const hourColonTag = document.getElementById("timer-hour-colon");
+    const minutesTag = document.getElementById("timer-minutes");
+    const secondsTag = document.getElementById("timer-seconds");
+
+    if (remainingTime.hour > 0) {
+        hourTag.setAttribute("style", `--value:${remainingTime.hour}`);
+        hourTag.style.display = "inline-block";
+        hourColonTag.style.display = "inline-block";
+    } else {
+        hourTag.style.display = "none";
+        hourColonTag.style.display = "none";
+    }
+
+    minutesTag.setAttribute("style", `--value:${remainingTime.minutes}`);
+    secondsTag.setAttribute("style", `--value:${remainingTime.seconds}`);
 }

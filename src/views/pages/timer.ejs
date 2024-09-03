@@ -9,7 +9,19 @@
         <circle cx="50%" cy="50%" r="48%" class="timer-circle-foreground"></circle>
       </svg>
       <div class="time-text absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full">
-        <div class="time text-4xl mb-2">00:00</div>
+        <div class="text-3xl flex justify-center items-end mb-2">
+          <span class="countdown">
+            <span id="timer-hour" style="--value:0;"></span>
+          </span>
+          <span id="timer-hour-colon">:</span>
+          <span class="countdown">
+            <span id="timer-minutes" style="--value:0;"></span>
+          </span>
+          <span id="timer-minutes-colon">:</span>
+          <span class="countdown">
+            <span id="timer-seconds" style="--value:0;"></span>
+          </span>
+        </div>
         <div>⏰ <span class="alarm-time text-warning text-xl ">00:00</span></div>
         <button id="soundOffBtn" class="btn btn-neutral mt-4 hidden" onclick="soundOff()">알람 끄기</button>
       </div>
@@ -39,6 +51,6 @@
     }
 
     // 새로운 타이머 시작
-    updateTimeRemaining(data.startTime, data.endTime);
+    updateTimer(data.startTime, data.endTime);
   });
 </script>
