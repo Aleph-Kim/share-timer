@@ -110,3 +110,25 @@ function resetTimer() {
     document.getElementById('minutes').value = "00";
     document.getElementById('seconds').value = "00";
 }
+
+/**
+ * 타이머 정지 함수
+ */
+async function pauseTimer() {
+    await fetch('/admin/pause', {
+        method: 'PUT'
+    });
+
+    alert('타이머가 정지되었습니다.');
+}
+
+/**
+ * 타이머 재시작 함수
+ */
+async function resumeTimer() {
+    await fetch('/admin/resume', {
+        method: 'PUT'
+    });
+
+    alert('타이머가 재개되었습니다.');
+}

@@ -39,18 +39,30 @@
   let timerInterval;
 
   /**
-   * timerUpdated 소켓 이벤트 발생 시 타이머를 새로 시작
+   * 타이머 업데이트 이벤트 처리
    */
-  socket.on('timerUpdated', (data) => {
-    document.getElementById('title').textContent = data.title;
-    document.getElementById('description').textContent = data.description;
+  socket.on('timerUpdated', (timerSettings) => {
+    document.getElementById('title').textContent = timerSettings.title;
+    document.getElementById('description').textContent = timerSettings.description;
 
     // 기존 타이머 제거
     if (timerInterval) {
       clearInterval(timerInterval);
     }
 
-    // 새로운 타이머 시작
-    updateTimer(data.startTime, data.endTime);
+    // 타이머 설정
+    setTimer(timerSettings);
+  });
+
+  /**
+   * 타이머 정지 이벤트 처리
+   */
+  socket.on('timerPaused', () => {
+    // 종료 시간 설정
+    const alarmTime = document.querySelector('.alarm-time');
+    alarmTime.textContent = "타이머가 정지되었습니다.";
+
+    alert("타이머가 정지되었습니다.");
+    clearInterval(timerInterval);
   });
 </script>

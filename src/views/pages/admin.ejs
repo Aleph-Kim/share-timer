@@ -53,11 +53,15 @@
     </div>
 
     <div class="flex flex-col items-center">
-        <div class="flex flex-row justify-between w-full">
-            <button class="btn btn-warning w-[49%]" type="button" onclick="resetTimer()">초기화</button>
-            <button class="btn btn-primary w-[49%]" type="submit">시작</button>
-        </div>
-        <button type="button" class="btn mt-4 btn-error w-full" onclick="deleteTimer()">기존 타이머 삭제</button>
+      <div class="flex flex-row justify-between w-full">
+        <button class="btn btn-warning w-[49%]" type="button" onclick="resetTimer()">초기화</button>
+        <button class="btn btn-primary w-[49%]" type="submit">시작</button>
+      </div>
+      <div class="flex flex-row justify-between w-full mt-4">
+        <button type="button" class="btn btn-info w-[49%]" onclick="pauseTimer()">타이머 정지</button>
+        <button type="button" class="btn btn-success w-[49%]" onclick="resumeTimer()">타이머 재개</button>
+      </div>
+      <button type="button" class="btn mt-4 btn-error w-full" onclick="deleteTimer()">기존 타이머 삭제</button>
     </div>
   </form>
 </div>
