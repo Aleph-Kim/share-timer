@@ -1,9 +1,35 @@
-<div class="container mx-auto p-8 max-w-[980px]">
+<div class="container mx-auto p-4 max-w-[980px]">
   <!-- 타이머 설정 -->
+  <h2 class="text-2xl font-bold mb-4 ml-4">타이머 설정</h2>
   <form id="timerForm" class="card bg-base-200 p-6">
     <input type="hidden" id="addSeconds" value="0" />
-
-    <h2 class="text-xl font-bold mb-4">타이머 설정</h2>
+    
+    <!-- 진행중인 타이머 -->
+    <div id="remaningTimer" class="flex mb-5 <%- timerStatus == 'end' ? 'hidden ' : '' %>">
+      <div class="flex flex-col justify-end">
+        <h2 class="font-bold mb-4">진행중인 타이머(남은 시간)</h2>
+        <div class="grid auto-cols-max grid-flow-col gap-5 text-center">
+          <div id="timerHourColon" class="bg-neutral rounded-box text-neutral-content flex flex-col p-2">
+            <span class="countdown font-mono text-5xl">
+              <span id="timerHour" style="--value:0;"></span>
+            </span>
+            hours
+          </div>
+          <div id="timerMinutesColon" class="bg-neutral rounded-box text-neutral-content flex flex-col p-2">
+            <span class="countdown font-mono text-5xl">
+              <span id="timerMinutes" style="--value:0;"></span>
+            </span>
+            min
+          </div>
+          <div class="bg-neutral rounded-box text-neutral-content flex flex-col p-2">
+            <span class="countdown font-mono text-5xl">
+              <span id="timerSeconds" style="--value:0;"></span>
+            </span>
+            sec
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- 시간 설정 -->
     <div class="grid grid-cols-3 gap-4 mb-6">
@@ -44,12 +70,12 @@
 
     <div class="mb-6">
       <label for="title" class="block mb-2">타이머 이름</label>
-      <input type="text" id="title" name="title" placeholder="타이머" class="input input-bordered w-full" required />
+      <input type="text" id="title" name="title" placeholder="타이머" class="input input-bordered w-full" value="<%- timerSettings.title %>" required />
     </div>
 
     <div class="mb-6">
       <label for="description" class="block mb-2">타이머 설명</label>
-      <input type="text" id="description" name="description" placeholder="타이머에 대한 설명" class="input input-bordered w-full" required />
+      <input type="text" id="description" name="description" placeholder="타이머에 대한 설명" class="input input-bordered w-full" value="<%- timerSettings.description %>" required />
     </div>
 
     <div class="flex flex-wrap justify-center">
@@ -63,6 +89,27 @@
 </div>
 
 <script>
+  const socket = io();
+  let timerInterval;
+
+  /**
+   * 타이머 업데이트 이벤트 처리
+   */
+  socket.on('timerUpdated', (timerSettings) => {
+    // 타이머 설정
+    setTimer(timerSettings);
+  });
+
+  /**
+   * 타이머 업데이트 이벤트 처리
+   */
+  socket.on('timerPaused', (timerSettings) => {
+    clearInterval(timerInterval);
+  });
+
+  /**
+   * 타이머 설정
+   */
   const form = document.getElementById('timerForm');
 
   document.addEventListener("DOMContentLoaded", function() {

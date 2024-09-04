@@ -45,8 +45,10 @@ const adminPage = (req, res) => {
         title: '타이머 관리자',
         body: '../pages/admin',
         timerStatus: timerStatus,
+        timerSettings: timerSettings,
         extraJs: [
-            "/assets/js/admin.js"
+            "/assets/js/admin.js",
+            '/socket.io/socket.io.js'
         ]
     });
 }
@@ -61,6 +63,8 @@ const updateTimer = (req, res) => {
 
     const io = socket.getIo();
 
+    timerSettings.title = req.body.title;
+    timerSettings.description = req.body.description;
     timerSettings.endTime = new Date(req.body.date).getTime();
     timerSettings.totalTime = timerSettings.endTime - Date.now();
     timerSettings.pauseTime = 0;

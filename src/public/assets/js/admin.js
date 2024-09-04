@@ -44,7 +44,7 @@ async function deleteTimer() {
     });
 
     alert('타이머가 삭제되었습니다.');
-    setButtons("delete");
+    setButtons("end");
 }
 
 /**
@@ -75,13 +75,13 @@ async function resumeTimer() {
  * 타이머 상태별 버튼 노출 수정 함수
  * @param {String} status 상태값
  */
-function setButtons(status){
+function setButtons(status) {
     const startBtn = document.getElementById('startBtn');
     const pauseBtn = document.getElementById('pauseBtn');
     const resumeBtn = document.getElementById('resumeBtn');
     const deleteBtn = document.getElementById('deleteBtn');
 
-    switch(status) {
+    switch (status) {
         case "run":
             startBtn.textContent = "새 타이머 시작";
             pauseBtn.style.display = "inline-flex"
@@ -93,7 +93,7 @@ function setButtons(status){
             deleteBtn.style.display = "inline-flex"
             pauseBtn.style.display = "none"
             break;
-        case "delete":
+        case "end":
             pauseBtn.style.display = "none"
             deleteBtn.style.display = "none"
             resumeBtn.style.display = "none"
@@ -145,4 +145,65 @@ function resetTimer() {
     document.getElementById('hours').value = "00";
     document.getElementById('minutes').value = "00";
     document.getElementById('seconds').value = "00";
+}
+
+/**
+ * 타이머 설정 함수
+ * @param {Object} 타이머 설정값
+ */
+function setTimer(timerSettings) {
+    const now = Date.now();
+    const remaningTimer = document.getElementById("remaningTimer");
+    remaningTimer.style.display = "flex";
+
+    // 정지된 타이머일 경우
+    if (timerSettings.isPaused) {
+        setPauseTimer(timerSettings)
+        return;
+    }
+
+    // 종료된 타이머일 경우
+    if (now > timerSettings.endTime) {
+        remaningTimer.style.display = "none";
+        return;
+    }
+
+    // 타이머 실행
+    timerInterval = setInterval(function () {
+        setRunTimer(timerSettings);
+    }, 100);
+}
+
+/**
+ * 정지된 타이머 세팅
+ * @param {Object} timerSettings 타이머 설정값
+ */
+function setPauseTimer(timerSettings) {
+    const remainingSeconds = Math.floor((timerSettings.endTime - timerSettings.pauseTime) / 1000);
+    const remainingTime = getSecondToTime(remainingSeconds);
+
+    // 남은 시간 업데이트
+    updateRemainingTime(remainingTime);
+}
+
+/**
+ * 진행중인 타이머 세팅
+ * @param {Object} timerSettings 타이머 설정값
+ */
+function setRunTimer(timerSettings) {
+    // 밀리초 단위 현재 시간
+    const now = Date.now();
+
+    // 남은 초단위 시간 (0보다 작으면 0으로 설정)
+    const remainingSeconds = Math.max(Math.floor((timerSettings.endTime - now) / 1000), 0);
+    // 남은 시간(시, 분, 초)
+    const remainingTime = getSecondToTime(remainingSeconds);
+
+    // 남은 시간 업데이트
+    updateRemainingTime(remainingTime);
+
+    // 남은 시간이 0이면 타이머를 정지
+    if (remainingSeconds <= 0) {
+        endTimer();
+    }
 }

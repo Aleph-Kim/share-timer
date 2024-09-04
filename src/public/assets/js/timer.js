@@ -159,62 +159,21 @@ function setRunTimer(timerSettings, timerCircleForeground, progressBar, progress
 
     // 남은 시간이 0이면 타이머를 정지
     if (remainingSeconds <= 0) {
-        setTimeout(() => {
-            clearInterval(timerInterval);
-            soundOn();
-        }, 1000);
+        endTimer();
     }
 }
 
 /**
- * 초 단위 시간을 시, 분, 초로 계산하여 반환하는 함수
- * 
- * @param {Number} remainingTime - 초 단위 시간
- * @returns {Object} - 시, 분, 초로 계산한 시간
+ * 타이머를 종료시키는 함수
  */
-function getSecondToTime(remainingTime) {
-    // 남은 시간 - 시
-    let hour = 0;
-    // 남은 시간 - 분
-    let minutes = Math.floor(remainingTime / 60);
-    // 남은 시간 - 초
-    const seconds = remainingTime % 60;
+function endTimer() {
+    const alarmTime = document.querySelector('.alarm-time');
 
-    // 1시간 이상 남았을 경우
-    if (minutes > 59) {
-        hour = Math.floor(minutes / 60);
-        minutes %= 60;
-    }
-
-    return {
-        hour: hour,
-        minutes: minutes,
-        seconds: seconds,
-    };
-}
-
-/**
- * 타이머의 남은 시간을 업데이트 하는 함수
- * 
- * @param {Object} remainingTime 남은 시간(시, 분, 초)
- */
-function updateRemainingTime(remainingTime) {
-    const hourTag = document.getElementById("timer-hour");
-    const hourColonTag = document.getElementById("timer-hour-colon");
-    const minutesTag = document.getElementById("timer-minutes");
-    const secondsTag = document.getElementById("timer-seconds");
-
-    if (remainingTime.hour > 0) {
-        hourTag.setAttribute("style", `--value:${remainingTime.hour}`);
-        hourTag.style.display = "inline-block";
-        hourColonTag.style.display = "inline-block";
-    } else {
-        hourTag.style.display = "none";
-        hourColonTag.style.display = "none";
-    }
-
-    minutesTag.setAttribute("style", `--value:${remainingTime.minutes}`);
-    secondsTag.setAttribute("style", `--value:${remainingTime.seconds}`);
+    setTimeout(() => {
+        clearInterval(timerInterval);
+        alarmTime.textContent = "타이머가 종료되었습니다.";
+        soundOn();
+    }, 1000);
 }
 
 /**
