@@ -13,7 +13,7 @@ function themeToggle() {
     const currentTheme = localStorage.getItem('theme');
     if (currentTheme) {
         htmlElement.setAttribute('data-theme', currentTheme);
-        themeIcon.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+        themeIcon.textContent = currentTheme === 'sunset' ? '🌙' : '☀️';
     }
 
     // 테마 변경
@@ -21,12 +21,12 @@ function themeToggle() {
         //현재 테마
         const currentTheme = htmlElement.getAttribute('data-theme');
         // 변경할 테마
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        const newTheme = currentTheme === 'sunset' ? 'nord' : 'sunset';
         htmlElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
 
         // 아이콘 변경
-        themeIcon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        themeIcon.textContent = newTheme === 'sunset' ? '🌙' : '☀️';
     });
 }
 

@@ -2,8 +2,9 @@ module.exports = {
     content: [
         "./src/views/**/*.{ejs,js}",
     ],
-    theme: {
-        extend: {},
+
+    daisyui: {
+        themes: ["nord", "sunset"],
     },
     plugins: [require('daisyui')],
 }
