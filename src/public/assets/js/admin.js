@@ -153,8 +153,7 @@ function resetTimer() {
  */
 function setTimer(timerSettings) {
     const now = Date.now();
-    const remaningTimer = document.getElementById("remaningTimer");
-    remaningTimer.style.display = "flex";
+    remainingTimerShow();
 
     // 정지된 타이머일 경우
     if (timerSettings.isPaused) {
@@ -164,7 +163,7 @@ function setTimer(timerSettings) {
 
     // 종료된 타이머일 경우
     if (now > timerSettings.endTime) {
-        remaningTimer.style.display = "none";
+        remainingTimerHidden()
         return;
     }
 
@@ -206,4 +205,31 @@ function setRunTimer(timerSettings) {
     if (remainingSeconds <= 0) {
         endTimer();
     }
+}
+
+/**
+ * 타이머를 종료시키는 함수
+ */
+function endTimer() {
+    setTimeout(() => {
+        clearInterval(timerInterval);
+        setButtons("end");
+        remainingTimerHidden();
+    }, 1000);
+}
+
+/**
+ * 진행 중인 타이머 노출처리 함수
+ */
+function remainingTimerShow() {
+    const remainingTimer = document.getElementById("remainingTimer");
+    remainingTimer.style.display = "flex";
+}
+
+/**
+ * 진행 중인 타이머 숨김처리 함수
+ */
+function remainingTimerHidden() {
+    const remainingTimer = document.getElementById("remainingTimer");
+    remainingTimer.style.display = "none";
 }
