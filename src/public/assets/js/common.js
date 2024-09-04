@@ -86,8 +86,8 @@ function updateRemainingTime(remainingTime) {
 
     if (remainingTime.hour > 0) {
         hourTag.setAttribute("style", `--value:${remainingTime.hour}`);
-        hourTag.style.display = "inline-block";
-        hourColonTag.style.display = "inline-block";
+        hourTag.style.display = "flex";
+        hourColonTag.style.display = "flex";
     } else {
         hourTag.style.display = "none";
         hourColonTag.style.display = "none";
