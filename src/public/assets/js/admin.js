@@ -28,6 +28,7 @@ async function timerUpdate(event) {
     });
 
     alert('타이머가 업데이트 되었습니다.');
+    setButtons("run");
 }
 
 /**
@@ -43,27 +44,62 @@ async function deleteTimer() {
     });
 
     alert('타이머가 삭제되었습니다.');
+    setButtons("delete");
 }
 
 /**
- * 현재시간으로부터 입력 받은 초 단위의 시간만큼 증가한 시간을 특정 형태로 반환하는 함수
- * @param addSeconds 
- * @returns 
+ * 타이머 정지 함수
  */
-function endTimeCalculate(addSeconds) {
+async function pauseTimer() {
+    await fetch('/admin/pause', {
+        method: 'PUT'
+    });
 
-    // 년, 월, 일 가져오기
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    alert('타이머가 정지되었습니다.');
+    setButtons("paused");
+}
 
-    // 시, 분 가져오기
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
+/**
+ * 타이머 재시작 함수
+ */
+async function resumeTimer() {
+    await fetch('/admin/resume', {
+        method: 'PUT'
+    });
 
-    // 형식에 맞게 문자열 반환
-    return date;
+    alert('타이머가 재개되었습니다.');
+    setButtons("run");
+}
+
+/**
+ * 타이머 상태별 버튼 노출 수정 함수
+ * @param {String} status 상태값
+ */
+function setButtons(status){
+    const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resumeBtn = document.getElementById('resumeBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+
+    switch(status) {
+        case "run":
+            startBtn.textContent = "새 타이머 시작";
+            pauseBtn.style.display = "inline-flex"
+            deleteBtn.style.display = "inline-flex"
+            resumeBtn.style.display = "none"
+            break;
+        case "paused":
+            resumeBtn.style.display = "inline-flex"
+            deleteBtn.style.display = "inline-flex"
+            pauseBtn.style.display = "none"
+            break;
+        case "delete":
+            pauseBtn.style.display = "none"
+            deleteBtn.style.display = "none"
+            resumeBtn.style.display = "none"
+            startBtn.textContent = "타이머 시작";
+            break;
+    }
 }
 
 /**
@@ -109,26 +145,4 @@ function resetTimer() {
     document.getElementById('hours').value = "00";
     document.getElementById('minutes').value = "00";
     document.getElementById('seconds').value = "00";
-}
-
-/**
- * 타이머 정지 함수
- */
-async function pauseTimer() {
-    await fetch('/admin/pause', {
-        method: 'PUT'
-    });
-
-    alert('타이머가 정지되었습니다.');
-}
-
-/**
- * 타이머 재시작 함수
- */
-async function resumeTimer() {
-    await fetch('/admin/resume', {
-        method: 'PUT'
-    });
-
-    alert('타이머가 재개되었습니다.');
 }

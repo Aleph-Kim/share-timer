@@ -28,9 +28,23 @@ const adminPage = (req, res) => {
     delete req.session.msg;
     req.session.isAdmin = true;
 
+    let timerStatus;
+    switch (true) {
+        case timerSettings.isPaused: // 정지된 타이머
+            timerStatus = "paused"
+            break;
+        case Date.now() > timerSettings.endTime: // 종료된 타이머
+            timerStatus = "end"
+            break;
+        default:
+            timerStatus = "run";
+            break;
+    }
+
     res.render('layouts/index', {
         title: '타이머 관리자',
         body: '../pages/admin',
+        timerStatus: timerStatus,
         extraJs: [
             "/assets/js/admin.js"
         ]

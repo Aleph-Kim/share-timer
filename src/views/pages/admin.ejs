@@ -1,4 +1,4 @@
-<div class="container mx-auto p-8">
+<div class="container mx-auto p-8 max-w-[980px]">
   <!-- 타이머 설정 -->
   <form id="timerForm" class="card bg-base-200 p-6">
     <input type="hidden" id="addSeconds" value="0" />
@@ -52,16 +52,12 @@
       <input type="text" id="description" name="description" placeholder="타이머에 대한 설명" class="input input-bordered w-full" required />
     </div>
 
-    <div class="flex flex-col items-center">
-      <div class="flex flex-row justify-between w-full">
-        <button class="btn btn-warning w-[49%]" type="button" onclick="resetTimer()">초기화</button>
-        <button class="btn btn-primary w-[49%]" type="submit">시작</button>
-      </div>
-      <div class="flex flex-row justify-between w-full mt-4">
-        <button type="button" class="btn btn-info w-[49%]" onclick="pauseTimer()">타이머 정지</button>
-        <button type="button" class="btn btn-success w-[49%]" onclick="resumeTimer()">타이머 재개</button>
-      </div>
-      <button type="button" class="btn mt-4 btn-error w-full" onclick="deleteTimer()">기존 타이머 삭제</button>
+    <div class="flex flex-wrap justify-center">
+      <button type="button" id="resetBtn" class="btn btn-warning w-[45%] mt-4 mr-4" onclick="resetTimer()">초기화</button>
+      <button type="submit" id="startBtn" class="btn btn-primary w-[45%] mt-4"><%- timerStatus != 'end' ? '새 ' : '' %> 타이머 시작</button>
+      <button type="button" id="pauseBtn" class="btn btn-info w-[45%] mt-4 mr-4 <%- timerStatus == 'run' ? '' : 'hidden' %>" onclick="pauseTimer()">기존 타이머 정지</button>
+      <button type="button" id="resumeBtn" class="btn btn-success w-[45%] mt-4 mr-4 <%- timerStatus == 'paused' ? '' : 'hidden' %>" onclick="resumeTimer()">기존 타이머 재개</button>
+      <button type="button" id="deleteBtn" class="btn btn-error w-[45%] mt-4 <%- timerStatus != 'end' ? '' : 'hidden' %>" onclick="deleteTimer()">기존 타이머 삭제</button>
     </div>
   </form>
 </div>
