@@ -1,11 +1,91 @@
+// 알람소리 파일
 const alarmSound = new Audio('/assets/sounds/alarm_sound.mp3');
+
+// 써클 길이
+let circleLength;
 
 /**
  * 타이머 설정 함수
  * @param {Object} 타이머 설정값
  */
-function setTimer(timerSettings) {
-    const now = Date.now();
+function initializeTimer(timerSettings) {
+    // 써클 길이 초기화
+    circleLength = setCircleAttributes();
+    // 브라우저 리사이즈 이벤트 핸들러 등록
+    window.addEventListener('resize', () => {
+        circleLength = setCircleAttributes();
+    });
+
+    // 타이머가 설정되지 않았을 경우
+    if (timerSettings.endTime == 0) {
+        return handleNoneTimer();
+    }
+
+    // 정지된 타이머일 경우
+    if (timerSettings.isPause) {
+        return handlePauseTimer(timerSettings, circleLength);
+    }
+
+    // 종료된 타이머일 경우
+    if (Date.now() > timerSettings.endTime) {
+        return handleEndTimer(timerSettings.endTime);
+    }
+
+    // 타이머 실행
+    handleRunTimer(timerSettings, circleLength);
+}
+
+/**
+ * 타이머 세팅 - 타이머가 없는 경우
+ */
+function handleNoneTimer() {
+    const alarmTime = document.querySelector('.alarm-time');
+    alarmTime.textContent = "타이머를 준비 중입니다.";
+
+    // 남은 시간 업데이트
+    updateTimeCount(getSecondToTime(0));
+
+    // 오버 타임 마크(+) 숨김처리
+    hiddenOverTimerMark();
+}
+
+/**
+ * 타이머 세팅 - 타이머가 종료된 경우
+ * @param {Number} endTime 타이머 종료 시간
+ */
+function handleEndTimer(endTime) {
+    const alarmTime = document.querySelector('.alarm-time');
+    alarmTime.textContent = "타이머가 종료되었습니다.";
+
+    // 오버 타임 마크(+) 노출처리
+    showOverTimerMark();
+
+    // 오버 타이머 실행
+    timerInterval = setInterval(function () {
+        overRunTimer(endTime);
+    }, 100);
+}
+
+/**
+ * 타이머 세팅 - 타이머가 정지된 경우
+ * @param {Object} timerSettings 타이머 설정값
+ * @param {Number} circleLength 써클 길이
+ */
+function handlePauseTimer(timerSettings, circleLength) {
+    const alarmTime = document.querySelector('.alarm-time');
+    alarmTime.textContent = "타이머가 정지되었습니다.";
+
+    // 오버 타임 마크(+) 숨김처리
+    hiddenOverTimerMark();
+    setPauseTimer(timerSettings, circleLength);
+}
+
+/**
+ * 타이머 세팅 - 타이머가 진행중인 경우
+ * @param {Object} timerSettings 타이머 설정값
+ * @param {Number} circleLength 써클 길이
+ */
+function handleRunTimer(timerSettings, circleLength) {
     // 타이머 써클
     const timerCircleForeground = document.querySelector('.timer-circle-foreground');
 
@@ -13,32 +93,13 @@ function setTimer(timerSettings) {
     const progressBar = document.querySelector('.progress');
     const progressPer = document.querySelector('.progress-per');
 
-    // 종료 시간 설정
+    // 종료 시간
     const alarmTime = document.querySelector('.alarm-time');
-
-    // 써클 길이 초기화
-    let circleLength = setCircleAttributes();
-
-    // 브라우저 리사이즈 이벤트 핸들러 등록
-    window.addEventListener('resize', () => {
-        circleLength = setCircleAttributes();
-    });
-
-    // 정지된 타이머일 경우
-    if (timerSettings.isPaused) {
-        alarmTime.textContent = "타이머가 정지되었습니다.";
-        setPauseTimer(timerSettings, timerCircleForeground, progressBar, progressPer, circleLength)
-        return;
-    }
-
-    // 종료된 타이머일 경우
-    if (now > timerSettings.endTime) {
-        alarmTime.textContent = "타이머가 종료되었습니다.";
-        return;
-    }
-
-    // 타이머 실행
     alarmTime.textContent = getEndDateText(timerSettings.endTime);
+
+    // 오버 타임 마크(+) 숨김처리
+    hiddenOverTimerMark();
+
     timerInterval = setInterval(function () {
         setRunTimer(timerSettings, timerCircleForeground, progressBar, progressPer, circleLength);
     }, 100);
@@ -110,7 +171,15 @@ function getEndDateText(endTime) {
  * @param {Element} progressPer 프로그래스 바 내부 진행 퍼센트
  * @param {Number} circleLength 써클 길이
  */
-function setPauseTimer(timerSettings, timerCircleForeground, progressBar, progressPer, circleLength) {
+function setPauseTimer(timerSettings, circleLength) {
+    // 타이머 써클
+    const timerCircleForeground = document.querySelector('.timer-circle-foreground');
+
+    // 프로그레스 바
+    const progressBar = document.querySelector('.progress');
+    const progressPer = document.querySelector('.progress-per');
+
+    // 남은 시간
     const remainingSeconds = Math.floor((timerSettings.endTime - timerSettings.pauseTime) / 1000);
     const remainingTime = getSecondToTime(remainingSeconds);
 
@@ -118,7 +187,7 @@ function setPauseTimer(timerSettings, timerCircleForeground, progressBar, progre
     const totalTime = Math.floor(timerSettings.totalTime / 1000);
 
     // 남은 시간 업데이트
-    updateRemainingTime(remainingTime);
+    updateTimeCount(remainingTime);
 
     // 프로그래스 바 업데이트
     updateProgress(progressBar, progressPer, totalTime, remainingSeconds);
@@ -149,7 +218,7 @@ function setRunTimer(timerSettings, timerCircleForeground, progressBar, progress
     const remainingTime = getSecondToTime(remainingSeconds);
 
     // 남은 시간 업데이트
-    updateRemainingTime(remainingTime);
+    updateTimeCount(remainingTime);
 
     // 프로그래스 바 업데이트
     updateProgress(progressBar, progressPer, totalTime, remainingSeconds);
@@ -158,22 +227,32 @@ function setRunTimer(timerSettings, timerCircleForeground, progressBar, progress
     updateCircle(timerCircleForeground, circleLength, totalTime, remainingSeconds);
 
     // 남은 시간이 0이면 타이머를 정지
-    if (remainingSeconds <= 0) {
-        endTimer();
+    if (remainingSeconds == 0) {
+        endTimer(timerSettings.endTime);
     }
 }
 
 /**
  * 타이머를 종료시키는 함수
  */
-function endTimer() {
+function endTimer(endTime) {
     const alarmTime = document.querySelector('.alarm-time');
 
+    clearInterval(timerInterval);
+
     setTimeout(() => {
-        clearInterval(timerInterval);
         alarmTime.textContent = "타이머가 종료되었습니다.";
         soundOn();
+
+        // 오버 타임 마크(+) 노출처리
+        showOverTimerMark();
+
+        // 오버 타이머 실행
+        timerInterval = setInterval(function () {
+            overRunTimer(endTime);
+        }, 100);
     }, 1000);
+
 }
 
 /**

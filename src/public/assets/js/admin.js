@@ -56,7 +56,7 @@ async function pauseTimer() {
     });
 
     alert('타이머가 정지되었습니다.');
-    setButtons("paused");
+    setButtons("pause");
 }
 
 /**
@@ -88,16 +88,22 @@ function setButtons(status) {
             deleteBtn.style.display = "inline-flex"
             resumeBtn.style.display = "none"
             break;
-        case "paused":
+        case "pause":
             resumeBtn.style.display = "inline-flex"
             deleteBtn.style.display = "inline-flex"
             pauseBtn.style.display = "none"
             break;
         case "end":
+            startBtn.textContent = "타이머 시작";
+            pauseBtn.style.display = "inline-flex"
+            deleteBtn.style.display = "inline-flex"
+            resumeBtn.style.display = "none"
+            break;
+        case "none":
+            startBtn.textContent = "타이머 시작";
             pauseBtn.style.display = "none"
             deleteBtn.style.display = "none"
             resumeBtn.style.display = "none"
-            startBtn.textContent = "타이머 시작";
             break;
     }
 }
@@ -151,23 +157,72 @@ function resetTimer() {
  * 타이머 설정 함수
  * @param {Object} 타이머 설정값
  */
-function setTimer(timerSettings) {
-    const now = Date.now();
-    remainingTimerShow();
+function initializeTimer(timerSettings) {
+    showTimer();
+
+    // 타이머가 설정되지 않았을 경우
+    if (timerSettings.endTime == 0) {
+        return handleNoneTimer();
+    }
 
     // 정지된 타이머일 경우
-    if (timerSettings.isPaused) {
-        setPauseTimer(timerSettings)
-        return;
+    if (timerSettings.isPause) {
+        return handlePauseTimer(timerSettings);
     }
 
     // 종료된 타이머일 경우
-    if (now > timerSettings.endTime) {
-        remainingTimerHidden()
-        return;
+    if (Date.now() > timerSettings.endTime) {
+        return handleEndTimer(timerSettings.endTime);
     }
 
     // 타이머 실행
+    handleRunTimer(timerSettings);
+}
+
+/**
+ * 타이머 세팅 - 타이머가 없는 경우
+ */
+function handleNoneTimer() {
+    // 오버 타임 마크(+) 숨김처리
+    hiddenOverTimerMark();
+
+    // 타이머 숨김 처리
+    hiddenTimer();
+}
+
+/**
+ * 타이머 세팅 - 타이머가 정지된 경우
+ * @param {Object} timerSettings 타이머 설정값
+ */
+function handlePauseTimer(timerSettings) {
+    // 오버 타임 마크(+) 숨김처리
+    hiddenOverTimerMark();
+
+    // 타이머 세팅
+    setPauseTimer(timerSettings);
+}
+
+/**
+ * 타이머 세팅 - 타이머가 종료된 경우
+ * @param {Number} endTime 타이머 종료 시간
+ */
+function handleEndTimer(endTime) {
+    // 오버 타임 마크(+) 노출처리
+    showOverTimerMark();
+
+    // 오버 타이머 실행
+    timerInterval = setInterval(function () {
+        overRunTimer(endTime);
+    }, 100);
+}
+
+/**
+ * 타이머 세팅 - 타이머가 진행중인 경우
+ * @param {*} timerSettings 타이머 설정값
+ */
+function handleRunTimer(timerSettings) {
+    // 오버 타임 마크(+) 숨김처리
+    hiddenOverTimerMark();
     timerInterval = setInterval(function () {
         setRunTimer(timerSettings);
     }, 100);
@@ -182,7 +237,7 @@ function setPauseTimer(timerSettings) {
     const remainingTime = getSecondToTime(remainingSeconds);
 
     // 남은 시간 업데이트
-    updateRemainingTime(remainingTime);
+    updateTimeCount(remainingTime);
 }
 
 /**
@@ -199,37 +254,45 @@ function setRunTimer(timerSettings) {
     const remainingTime = getSecondToTime(remainingSeconds);
 
     // 남은 시간 업데이트
-    updateRemainingTime(remainingTime);
+    updateTimeCount(remainingTime);
 
     // 남은 시간이 0이면 타이머를 정지
     if (remainingSeconds <= 0) {
-        endTimer();
+        endTimer(timerSettings.endTime);
     }
 }
 
 /**
  * 타이머를 종료시키는 함수
  */
-function endTimer() {
+function endTimer(endTime) {
+    clearInterval(timerInterval);
+
     setTimeout(() => {
-        clearInterval(timerInterval);
         setButtons("end");
-        remainingTimerHidden();
+
+        // 오버 타임 마크(+) 노출처리
+        showOverTimerMark();
+
+        // 오버 타이머 실행
+        timerInterval = setInterval(function () {
+            overRunTimer(endTime);
+        }, 100);
     }, 1000);
 }
 
 /**
- * 진행 중인 타이머 노출처리 함수
+ * 타이머 노출처리 함수
  */
-function remainingTimerShow() {
+function showTimer() {
     const remainingTimer = document.getElementById("remainingTimer");
     remainingTimer.style.display = "flex";
 }
 
 /**
- * 진행 중인 타이머 숨김처리 함수
+ * 타이머 숨김처리 함수
  */
-function remainingTimerHidden() {
+function hiddenTimer() {
     const remainingTimer = document.getElementById("remainingTimer");
     remainingTimer.style.display = "none";
 }

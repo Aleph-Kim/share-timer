@@ -30,8 +30,11 @@ const adminPage = (req, res) => {
 
     let timerStatus;
     switch (true) {
-        case timerSettings.isPaused: // 정지된 타이머
-            timerStatus = "paused"
+        case timerSettings.endTime == 0:
+            timerStatus = "none"
+            break;
+        case timerSettings.isPause: // 정지된 타이머
+            timerStatus = "pause"
             break;
         case Date.now() > timerSettings.endTime: // 종료된 타이머
             timerStatus = "end"
@@ -68,7 +71,7 @@ const updateTimer = (req, res) => {
     timerSettings.endTime = new Date(req.body.date).getTime();
     timerSettings.totalTime = timerSettings.endTime - Date.now();
     timerSettings.pauseTime = 0;
-    timerSettings.isPaused = false;
+    timerSettings.isPause = false;
 
     io.emit('timerUpdated', timerSettings); // 모든 클라이언트에 업데이트 전송
     res.status(200).send('Timer updated');
@@ -89,7 +92,7 @@ const deleteTimer = (req, res) => {
     timerSettings.totalTime = 0;
     timerSettings.endTime = 0;
     timerSettings.pauseTime = 0;
-    timerSettings.isPaused = false;
+    timerSettings.isPause = false;
 
     io.emit('timerUpdated', timerSettings); // 모든 클라이언트에 업데이트 전송
     res.status(200).send('Timer updated');
@@ -100,24 +103,24 @@ const deleteTimer = (req, res) => {
  * @returns 
  */
 const pauseTimer = (req, res) => {
-    if (!req.session.isAdmin || timerSettings.isPaused) {
+    if (!req.session.isAdmin || timerSettings.isPause) {
         return res.status(400).send('막아놨지롱');
     }
 
     const io = socket.getIo();
 
     timerSettings.pauseTime = Date.now();
-    timerSettings.isPaused = true;
+    timerSettings.isPause = true;
 
-    io.emit('timerPaused', timerSettings);
-    res.status(200).send('Timer paused');
+    io.emit('timerPause', timerSettings);
+    res.status(200).send('Timer pause');
 }
 
 /**
  * 타이머 재개
  */
 const resumeTimer = (req, res) => {
-    if (!req.session.isAdmin || !timerSettings.isPaused) {
+    if (!req.session.isAdmin || !timerSettings.isPause) {
         return res.status(400).send('접근 차단.');
     }
 
@@ -127,7 +130,7 @@ const resumeTimer = (req, res) => {
     // 일시정지된 시간을 계산하여 종료 시간을 재설정
     timerSettings.endTime = now + timerSettings.endTime - timerSettings.pauseTime;
     timerSettings.pauseTime = 0;
-    timerSettings.isPaused = false;
+    timerSettings.isPause = false;
 
     io.emit('timerUpdated', timerSettings); // 모든 클라이언트에 업데이트 전송
     res.status(200).send('Timer resumed');

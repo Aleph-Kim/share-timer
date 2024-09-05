@@ -7,22 +7,25 @@
     <!-- 진행중인 타이머 -->
     <div id="remainingTimer" class="flex mb-5 <%- timerStatus == 'end' ? 'hidden ' : '' %>">
       <div class="flex flex-col justify-end">
-        <h2 class="font-bold mb-4">진행중인 타이머(남은 시간)</h2>
+        <h2 class="font-bold mb-4">진행중인 타이머</h2>
         <div class="grid auto-cols-max grid-flow-col gap-5 text-center">
+          <span id="overTimerMark" class="text-5xl flex items-center hidden opacity-0 transform scale-75 transition-all duration-500 ease-in-out">
+            +
+          </span>
           <div id="timerHourColon" class="bg-neutral rounded-box text-neutral-content flex flex-col p-2">
-            <span class="countdown font-mono text-5xl">
+            <span class="countdown text-5xl">
               <span id="timerHour" style="--value:0;"></span>
             </span>
             hours
           </div>
           <div id="timerMinutesColon" class="bg-neutral rounded-box text-neutral-content flex flex-col p-2">
-            <span class="countdown font-mono text-5xl">
+            <span class="countdown text-5xl">
               <span id="timerMinutes" style="--value:0;"></span>
             </span>
             min
           </div>
           <div class="bg-neutral rounded-box text-neutral-content flex flex-col p-2">
-            <span class="countdown font-mono text-5xl">
+            <span class="countdown text-5xl">
               <span id="timerSeconds" style="--value:0;"></span>
             </span>
             sec
@@ -80,10 +83,10 @@
 
     <div class="flex flex-wrap justify-center">
       <button type="button" id="resetBtn" class="btn btn-warning w-[45%] mt-4 mr-4" onclick="resetTimer()">초기화</button>
-      <button type="submit" id="startBtn" class="btn btn-primary w-[45%] mt-4"><%- timerStatus != 'end' ? '새 ' : '' %> 타이머 시작</button>
-      <button type="button" id="pauseBtn" class="btn btn-info w-[45%] mt-4 mr-4 <%- timerStatus == 'run' ? '' : 'hidden' %>" onclick="pauseTimer()">기존 타이머 정지</button>
-      <button type="button" id="resumeBtn" class="btn btn-success w-[45%] mt-4 mr-4 <%- timerStatus == 'paused' ? '' : 'hidden' %>" onclick="resumeTimer()">기존 타이머 재개</button>
-      <button type="button" id="deleteBtn" class="btn btn-error w-[45%] mt-4 <%- timerStatus != 'end' ? '' : 'hidden' %>" onclick="deleteTimer()">기존 타이머 삭제</button>
+      <button type="submit" id="startBtn" class="btn btn-primary w-[45%] mt-4"><%- timerStatus != 'none' ? '새 ' : '' %> 타이머 시작</button>
+      <button type="button" id="pauseBtn" class="btn btn-info w-[45%] mt-4 mr-4 <%- timerStatus == 'run' || timerStatus == 'end' ? '' : 'hidden' %>" onclick="pauseTimer()">기존 타이머 정지</button>
+      <button type="button" id="resumeBtn" class="btn btn-success w-[45%] mt-4 mr-4 <%- timerStatus == 'pause' ? '' : 'hidden' %>" onclick="resumeTimer()">기존 타이머 재개</button>
+      <button type="button" id="deleteBtn" class="btn btn-error w-[45%] mt-4 <%- timerStatus != 'none' ? '' : 'hidden' %>" onclick="deleteTimer()">기존 타이머 삭제</button>
     </div>
   </form>
 </div>
@@ -102,13 +105,13 @@
     }
 
     // 타이머 설정
-    setTimer(timerSettings);
+    initializeTimer(timerSettings);
   });
 
   /**
    * 타이머 업데이트 이벤트 처리
    */
-  socket.on('timerPaused', (timerSettings) => {
+  socket.on('timerPause', (timerSettings) => {
     clearInterval(timerInterval);
   });
 

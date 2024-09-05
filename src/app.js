@@ -28,7 +28,7 @@ const io = socketHelper.init(server);
 const adminRoutes = require("./routes/adminRoute");
 const timerRoutes = require("./routes/timerRoute");
 
-// 타이머 세팅값
+// 타이머 설정값
 let timerSettings = require('./config/timerSettings');
 
 // application/x-www-form-urlencoded(html 폼) 데이터 파싱
