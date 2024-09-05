@@ -143,24 +143,26 @@ function getEndDateText(endTime) {
     const now = new Date();
     const [endYear, endMonth, endDay] = [endDate.getFullYear(), endDate.getMonth() + 1, endDate.getDate()];
 
-    // 기본 반환 문자열
-    const defaultTimeText = `${endDate.getHours()}시 ${endDate.getMinutes()}분`;
-
     // 년도가 다르면 년도 추가
     if (endYear !== now.getFullYear()) {
-        return `${endYear}년 ${endMonth}월 ${endDay}일 ` + defaultTimeText;
+        return `${endYear}년 ${endMonth}월 ${endDay}일 ${endDate.getHours()}시 ${endDate.getMinutes()}분`;
     }
 
     // 날이 다르면 월, 일 추가
     if (endDay !== now.getDate()) {
-        return `${endMonth}월 ${endDay}일 ` + defaultTimeText;
+        return `${endMonth}월 ${endDay}일 ${endDate.getHours()}시 ${endDate.getMinutes()}분`;
+    }
+
+    // 분과 초가 0일 경우 "정각"으로 표시
+    if (endDate.getMinutes() + endDate.getSeconds() == 0) {
+        return `${endDate.getHours()}시 정각`;
     }
 
     if (endDate.getSeconds() != 0) {
-        return defaultTimeText + ` ${endDate.getSeconds()}초`;
+        return `${endDate.getHours()}시 ${endDate.getMinutes()}분 ${endDate.getSeconds()}초`;
     }
 
-    return defaultTimeText;
+    return `${endDate.getHours()}시 ${endDate.getMinutes()}분`;
 }
 
 /**
