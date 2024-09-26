@@ -213,7 +213,7 @@ function handleEndTimer(endTime) {
     // 오버 타이머 실행
     timerInterval = setInterval(function () {
         overRunTimer(endTime);
-    }, 100);
+    }, 1000);
 }
 
 /**
@@ -225,7 +225,7 @@ function handleRunTimer(timerSettings) {
     hiddenOverTimerMark();
     timerInterval = setInterval(function () {
         setRunTimer(timerSettings);
-    }, 100);
+    }, 1000);
 }
 
 /**
@@ -277,7 +277,7 @@ function endTimer(endTime) {
         // 오버 타이머 실행
         timerInterval = setInterval(function () {
             overRunTimer(endTime);
-        }, 100);
+        }, 1000);
     }, 1000);
 }
 
