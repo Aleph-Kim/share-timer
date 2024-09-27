@@ -2190,6 +2190,10 @@ html {
   margin-top: 1.5rem;
 }
 
+.mr-3 {
+  margin-right: 0.75rem;
+}
+
 .block {
   display: block;
 }
@@ -2468,3 +2472,8 @@ html {
 }
 
 /* DaisyUI의 스타일을 포함 */
+
+.after\:content-\[\'\C77C\'\]::after {
+  --tw-content: '일';
+  content: var(--tw-content);
+}

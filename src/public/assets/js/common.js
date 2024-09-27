@@ -53,20 +53,31 @@ function soundIconToggle() {
  * @returns {Object} - 시, 분, 초로 계산한 시간
  */
 function getSecondToTime(remainingTime) {
-    // 남은 시간 - 시
-    let hour = 0;
+    // 남은 시간 - 일, 시, 분, 초
+    let day, hour, minutes, seconds = 0;
     // 남은 시간 - 분
-    let minutes = Math.floor(remainingTime / 60);
+    minutes = Math.floor(remainingTime / 60);
     // 남은 시간 - 초
-    const seconds = remainingTime % 60;
+    seconds = remainingTime % 60;
 
-    // 1시간 이상 남았을 경우
-    if (minutes > 59) {
-        hour = Math.floor(minutes / 60);
-        minutes %= 60;
+    // 1시간 이하로 남았을 경우
+    if (minutes < 60) {
+        return {
+            day: day,
+            hour: hour,
+            minutes: minutes,
+            seconds: seconds,
+        };
     }
 
+    hour = Math.floor(minutes / 60);
+    minutes %= 60;
+
+    day = Math.floor(hour / 24);
+    hour %= 24;
+
     return {
+        day: day,
         hour: hour,
         minutes: minutes,
         seconds: seconds,
@@ -79,12 +90,26 @@ function getSecondToTime(remainingTime) {
  * @param {Object} time 표시할 시간(시, 분, 초)
  */
 function updateTimeCount(time) {
+    console.log('time: ', time);
+    const dayTag = document.getElementById("timerDay");
+    const dayCountDown = document.getElementById("dayCountDown");
     const hourTag = document.getElementById("timerHour");
     const hourColonTag = document.getElementById("timerHourColon");
     const minutesTag = document.getElementById("timerMinutes");
     const secondsTag = document.getElementById("timerSeconds");
 
-    if (time.hour > 0) {
+    // 일 단위가 0일 경우
+    if (time.day > 0) {
+        dayTag.setAttribute("style", `--value:${time.day}`);
+        dayTag.style.display = "flex";
+        dayCountDown.style.display = "flex";
+    } else {
+        dayTag.style.display = "none";
+        dayCountDown.style.display = "none";
+    }
+
+    // 시간 단위가 0일 경우
+    if (time.hour > 0 || time.day > 0) {
         hourTag.setAttribute("style", `--value:${time.hour}`);
         hourTag.style.display = "flex";
         hourColonTag.style.display = "flex";
@@ -95,6 +120,7 @@ function updateTimeCount(time) {
 
     minutesTag.setAttribute("style", `--value:${time.minutes}`);
     secondsTag.setAttribute("style", `--value:${time.seconds}`);
+
 }
 
 /**
