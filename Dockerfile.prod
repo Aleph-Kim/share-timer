@@ -13,6 +13,9 @@ RUN npm install --production
 # 어플리케이션 코드 복사
 COPY . .
 
+# tailwind 빌드
+RUN npm run build:css
+
 # 어플리케이션이 실행될 포트 설정
 EXPOSE 3000
 
